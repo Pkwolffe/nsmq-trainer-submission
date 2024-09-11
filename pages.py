@@ -15,6 +15,42 @@ from streamlit_drawable_canvas import st_canvas
 import numpy as np
 
 
+# Connect to the Ethereum network
+infura_url = 'https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID'  # Replace with your Infura or other provider URL
+web3 = Web3(Web3.HTTPProvider(infura_url))
+
+# Check if connected
+if not web3.isConnected():
+    st.error("Failed to connect to the Ethereum network.")
+    st.stop()
+
+# Define the function to handle the payment
+def make_payment(to_address, amount, private_key):
+    try:
+        # Prepare the transaction
+        transaction = {
+            'to': to_address,
+            'from': web3.eth.defaultAccount,
+            'value': web3.toWei(amount, 'ether'),
+            'gas': 2000000,
+            'gasPrice': web3.toWei('50', 'gwei'),
+            'nonce': web3.eth.getTransactionCount(web3.eth.defaultAccount),
+        }
+
+        # Sign the transaction
+        signed_txn = web3.eth.account.sign_transaction(transaction, private_key=private_key)
+
+        # Send the transaction
+        tx_hash = web3.eth.sendRawTransaction(signed_txn.rawTransaction)
+
+        # Wait for the transaction receipt
+        tx_receipt = web3.eth.waitForTransactionReceipt(tx_hash)
+
+        return f"Payment successful! Transaction hash: {web3.toHex(tx_hash)}"
+    except Exception as e:
+        return f"Payment failed: {str(e)}"
+
+
 with open("data/configurations/student.json", "r") as file:
     data =  json.load(file)
 
@@ -70,11 +106,26 @@ def home():
                 * Empowerment: Provides students with the tools and knowledge to compete at the highest level."""
         )
 
-     # Add video space with "AD demo" label
-        st.header("Video Showcase")
-        st.write("Here's a demo video showcasing our ad integration feature:")
-        st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")  # Replace with actual video URL
-        st.write("AD demo")
+      # Embed a video and add a button for payment
+    st.video("https://www.youtube.com/watch?v=YOUR_VIDEO_ID")  # Replace with your video URL
+    st.write("AD demo")
+
+    with st.form(key='payment_form'):
+        recipient_address = st.text_input("Recipient Address")
+        amount = st.number_input("Amount (ETH)", min_value=0.0, format="%.8f")
+        private_key = st.text_input("Your Private Key", type="password")
+        submit_button = st.form_submit_button("Make Payment")
+
+        if submit_button:
+            if not recipient_address or not amount or not private_key:
+                st.error("Please fill in all fields.")
+            else:
+                # Set default account for transaction
+                web3.eth.defaultAccount = '0xYourAddress'  # Replace with your address
+
+                # Process the payment
+                result = make_payment(recipient_address, amount, private_key)
+                st.write(result)
 
     with tab2:
         st.title("About")
