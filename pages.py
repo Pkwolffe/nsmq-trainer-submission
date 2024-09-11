@@ -70,6 +70,12 @@ def home():
                 * Empowerment: Provides students with the tools and knowledge to compete at the highest level."""
         )
 
+     # Add video space with "AD demo" label
+        st.header("Video Showcase")
+        st.write("Here's a demo video showcasing our ad integration feature:")
+        st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")  # Replace with actual video URL
+        st.write("AD demo")
+
     with tab2:
         st.title("About")
         st.write("The JALI Project is an initiative to improve access to quality education in Ghana. Our team of developers and educators are committed to creating innovative solutions to address the challenges faced by students and educators in the country.")
