@@ -136,7 +136,8 @@ typing-extensions
 tzdata                    
 uritemplate               
 urllib3                   
-watchdog                  
+watchdog  
+web3
 websockets                
 werkzeug                  
 wikipedia                 
