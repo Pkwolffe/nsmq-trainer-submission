@@ -2,6 +2,9 @@
 # NSMQ Trainer-Fundraiser Project
 
 Welcome to the NSMQ Project repository! This project combines decentralized technology with a practical hardware component to enhance user engagement and financial sustainability.
+---
+[Subgraph code ](https://github.com/Pkwolffe/study-fundraiser-project) 
+---
 
 ## Getting Started
 
