@@ -1,0 +1,29 @@
+specVersion: 0.0.2
+description: Queries transactions from NSMQ Fundraiser smart contract.
+repository: https://github.com/your-username/nsmq-fundraiser-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: NSMQFundraiser
+    network: sepolia
+    source:
+      address: "YOUR_CONTRACT_ADDRESS"
+      abi: NSMQFundraiser
+      startBlock: YOUR_DEPLOYMENT_BLOCK
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Payment
+        - FundWithdrawal
+      abis:
+        - name: NSMQFundraiser
+          file: ./abis/NSMQFundraiser.json
+      eventHandlers:
+        - event: PaymentMade(address,uint256)
+          handler: handlePaymentMade
+        - event: FundWithdrawn(address,uint256)
+          handler: handleFundWithdrawn
+      file: ./src/nsmqFundraiser.ts

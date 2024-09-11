@@ -1,0 +1,13 @@
+type Payment @entity {
+  id: ID!
+  participant: Bytes!
+  amount: BigInt!
+  timestamp: BigInt!
+}
+
+type FundWithdrawal @entity {
+  id: ID!
+  owner: Bytes!
+  amount: BigInt!
+  timestamp: BigInt!
+}
